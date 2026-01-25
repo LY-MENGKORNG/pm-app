@@ -1,24 +1,6 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono, JetBrains_Mono } from "next/font/google";
-import "./globals.css";
-import { ThemeProvider } from "@/components/provider/theme-provider";
-
-const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-sans' });
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title: "Project Management",
-  description: "Project Management App",
-};
+import { AppSidebar } from "@/components/custom/sidebar/app-sidebar"
+import { SidebarProvider } from "@/components/provider/sidebar-provider"
+import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
 
 export default function RootLayout({
   children,
@@ -26,14 +8,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={jetbrainsMono.variable}>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+          <div className="flex items-center gap-2 px-4">
+            <SidebarTrigger className="-ml-1" />
+          </div>
+        </header>
+        <main className="flex flex-1 flex-col gap-4 p-4">
           {children}
-        </ThemeProvider>
-      </body>
-    </html>
-  );
+        </main>
+      </SidebarInset>
+    </SidebarProvider>
+  )
 }

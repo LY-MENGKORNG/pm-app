@@ -1,5 +1,6 @@
 import { index, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 import { user } from "./user";
+import { organization } from "./organization";
 
 export const project = pgTable("project", {
   id: serial("id").primaryKey(),
@@ -8,6 +9,9 @@ export const project = pgTable("project", {
   authorId: text("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
+  organizationId: text("organization_id")
+    .notNull()
+    .references(() => organization.id, { onDelete: "cascade" }),
   status: text("status").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")

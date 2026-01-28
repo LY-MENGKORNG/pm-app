@@ -48,7 +48,11 @@ export default function LoginForm({
     const { data, error } = await authClient.signIn.email(payload)
     if (error || !data?.user) throw error
 
-    if (data.user.role === "admin") {
+    const { data: account, error: errorAccountInfo } = await authClient.getSession()
+
+    if (errorAccountInfo) throw errorAccountInfo
+
+    if (account?.user.role === "admin") {
       router.replace("/dashboard")
     } else {
       router.replace("/")

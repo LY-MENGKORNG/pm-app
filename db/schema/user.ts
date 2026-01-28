@@ -1,4 +1,5 @@
 import { pgTable, text, boolean, timestamp } from "drizzle-orm/pg-core"
+import z from "zod/v4";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -16,3 +17,9 @@ export const user = pgTable("user", {
   banReason: text("ban_reason"),
   banExpires: timestamp("ban_expires"),
 });
+
+export const createUserSchema = z.object({
+  name: z.string().min(3).max(50).trim(),
+  email: z.email().trim(),
+  password: z.string().min(8).trim(),
+})
